@@ -59,7 +59,7 @@ export function AppointmentCard({
       <div className="flex justify-between items-start mb-3">
         <div>
           <h3 className="font-semibold text-lg">
-            {isDoctorView ? appointment.patient?.name : appointment.doctor?.name || 'Doctor'}
+            {isDoctorView ? appointment.patient?.full_name : appointment.doctor?.full_name || 'Doctor'}
           </h3>
           <p className="text-sm text-gray-600">
             {dateStr} at {timeStr}

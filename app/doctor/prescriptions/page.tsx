@@ -13,7 +13,7 @@ export default function DoctorPrescriptions() {
   const router = useRouter();
   const { user, loading: authLoading } = useAuth();
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [patientList, setPatientList] = useState<{ id: string; name: string }[]>([]);
+  const [patientList, setPatientList] = useState<{ id: string; full_name: string }[]>([]);;
   const [selectedPatientId, setSelectedPatientId] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [uploading, setUploading] = useState(false);
@@ -54,7 +54,7 @@ export default function DoctorPrescriptions() {
       setPatientList(
         uniquePatients.map((id) => ({
           id,
-          name: `Patient ${id.substring(0, 8)}`,
+          full_name: `Patient ${id.substring(0, 8)}`,
         }))
       );
 
@@ -147,7 +147,7 @@ export default function DoctorPrescriptions() {
                           : 'hover:bg-gray-50'
                       }`}
                     >
-                      <p className="font-medium text-sm">{patient.name}</p>
+                      <p className="font-medium text-sm">{patient.full_name}</p>
                     </div>
                   ))
                 )}

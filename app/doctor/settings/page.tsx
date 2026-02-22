@@ -121,7 +121,7 @@ export default function DoctorSettings() {
               <div className="bg-gray-50 p-4 rounded-lg space-y-2">
                 <div>
                   <p className="text-sm text-gray-600">Name</p>
-                  <p className="font-medium">{user.name}</p>
+                  <p className="font-medium">{user.full_name}</p>
                 </div>
                 <div>
                   <p className="text-sm text-gray-600">Email</p>
@@ -129,7 +129,7 @@ export default function DoctorSettings() {
                 </div>
                 <div>
                   <p className="text-sm text-gray-600">Phone</p>
-                  <p className="font-medium">{user.phone}</p>
+                  <p className="font-medium">{user.phone ?? 'N/A'}</p>
                 </div>
               </div>
             </div>

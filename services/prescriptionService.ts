@@ -51,7 +51,7 @@ export const prescriptionService = {
   async getDoctorPatientsForPrescription(doctorId: string) {
     const { data, error } = await supabase
       .from('appointments')
-      .select('patient_id, patients:users_profile(id, name, email)')
+      .select('patient_id, patients:users_profile(id, full_name, email)')
       .eq('doctor_id', doctorId)
       .eq('status', 'in-progress');
 

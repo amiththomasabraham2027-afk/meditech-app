@@ -2,10 +2,29 @@ export type UserRole = 'patient' | 'doctor' | null;
 
 export interface UserProfile {
   id: string;
-  name: string;
+  full_name: string;
   email: string;
-  phone: string;
+  phone?: string;
   role: UserRole;
+  avatar_url?: string;
+  bio?: string;
+  date_of_birth?: string;
+  gender?: string;
+  blood_group?: string;
+  address?: string;
+  city?: string;
+  state?: string;
+  zip_code?: string;
+  country?: string;
+  emergency_contact?: string;
+  emergency_contact_phone?: string;
+  medical_history?: string;
+  allergies?: string;
+  current_medications?: string;
+  insurance_provider?: string;
+  insurance_policy_number?: string;
+  is_active?: boolean;
+  is_verified?: boolean;
   created_at: string;
   updated_at: string;
 }
@@ -25,13 +44,15 @@ export interface Department {
 
 export interface Doctor {
   id: string;
-  user_id: string;
-  hospital_id: string;
-  specialization: string;
-  name?: string;
-  email?: string;
-  phone?: string;
+  doctor_id: string;
+  email: string;
+  name: string;
+  specialty?: string;
+  user_id?: string;
+  hospital_id?: string;
+  specialization?: string;
   created_at: string;
+  updated_at: string;
 }
 
 export interface Appointment {

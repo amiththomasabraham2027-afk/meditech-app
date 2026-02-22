@@ -15,7 +15,7 @@ export default function DoctorPatientRecords() {
   const [records, setRecords] = useState<MedicalRecord[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedPatientId, setSelectedPatientId] = useState<string | null>(null);
-  const [patientList, setPatientList] = useState<{ id: string; name: string }[]>([]);
+  const [patientList, setPatientList] = useState<{ id: string; full_name: string }[]>([]);;
 
   useEffect(() => {
     if (!authLoading && !user) {
@@ -49,7 +49,7 @@ export default function DoctorPatientRecords() {
       setPatientList(
         uniquePatients.map((id) => ({
           id,
-          name: `Patient ${id.substring(0, 8)}`,
+          full_name: `Patient ${id.substring(0, 8)}`,
         }))
       );
 
@@ -117,7 +117,7 @@ export default function DoctorPatientRecords() {
                           : 'hover:bg-gray-50'
                       }`}
                     >
-                      <p className="font-medium text-sm">{patient.name}</p>
+                      <p className="font-medium text-sm">{patient.full_name}</p>
                     </div>
                   ))
                 )}

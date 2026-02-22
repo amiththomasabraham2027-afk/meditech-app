@@ -12,7 +12,7 @@ export default function PatientSettings() {
   const { user, loading: authLoading, login } = useAuth();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [formData, setFormData] = useState({
-    name: '',
+    full_name: '',
     email: '',
     phone: '',
   });
@@ -28,9 +28,9 @@ export default function PatientSettings() {
   useEffect(() => {
     if (user) {
       setFormData({
-        name: user.name,
+        full_name: user.full_name,
         email: user.email,
-        phone: user.phone,
+        phone: user.phone ?? '',
       });
     }
   }, [user]);
@@ -105,8 +105,8 @@ export default function PatientSettings() {
                 </label>
                 <input
                   type="text"
-                  name="name"
-                  value={formData.name}
+                  name="full_name"
+                  value={formData.full_name}
                   onChange={handleInputChange}
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500"
                   required
@@ -153,9 +153,9 @@ export default function PatientSettings() {
                   type="button"
                   onClick={() =>
                     setFormData({
-                      name: user.name,
+                      full_name: user.full_name,
                       email: user.email,
-                      phone: user.phone,
+                      phone: user.phone ?? '',
                     })
                   }
                   className="flex-1 border border-gray-300 text-gray-700 py-2 rounded-lg font-semibold hover:bg-gray-50"

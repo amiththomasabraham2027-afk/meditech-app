@@ -24,9 +24,9 @@ export function DoctorCard({ doctor, onSelect, selected }: DoctorCardProps) {
     >
       <div className="flex items-start justify-between mb-3">
         <div>
-          <h3 className="font-semibold text-lg">{profile.name || 'Doctor'}</h3>
+          <h3 className="font-semibold text-lg">{doctor.name || profile.full_name || 'Doctor'}</h3>
           <p className="text-sm text-blue-600 font-medium">
-            {doctor.specialization}
+            {doctor.specialty || doctor.specialization}
           </p>
         </div>
         <div className="flex items-center gap-1">

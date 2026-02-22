@@ -3,21 +3,15 @@ import { UserProfile, UserRole } from '@/models/types';
 
 export const userService = {
   async createUserProfile(
+    id: string,
     email: string,
-    name: string,
+    full_name: string,
     phone: string,
     role: UserRole
   ) {
     const { data, error } = await supabase
       .from('users_profile')
-      .insert([
-        {
-          name,
-          email,
-          phone,
-          role,
-        },
-      ])
+      .insert([{ id, email, full_name, phone, role }])
       .select()
       .single();
 

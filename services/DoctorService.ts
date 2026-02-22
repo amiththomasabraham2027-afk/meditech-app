@@ -3,17 +3,19 @@ import { Doctor } from '@/models/types';
 
 export const doctorService = {
   async createDoctor(
-    userId: string,
-    hospitalId: string,
-    specialization: string
+    doctorId: string,
+    email: string,
+    name: string,
+    specialty?: string
   ) {
     const { data, error } = await supabase
       .from('doctors')
       .insert([
         {
-          user_id: userId,
-          hospital_id: hospitalId,
-          specialization,
+          doctor_id: doctorId,
+          email,
+          name,
+          specialty,
         },
       ])
       .select()
@@ -26,8 +28,8 @@ export const doctorService = {
   async getDoctorsBySpecialization(specialization: string) {
     const { data, error } = await supabase
       .from('doctors')
-      .select('*, users_profile(*)')
-      .eq('specialization', specialization);
+      .select('*')
+      .eq('specialty', specialization);
 
     if (error) throw error;
     return data;
@@ -36,7 +38,7 @@ export const doctorService = {
   async getDoctorsByHospital(hospitalId: string) {
     const { data, error } = await supabase
       .from('doctors')
-      .select('*, users_profile(*)')
+      .select('*')
       .eq('hospital_id', hospitalId);
 
     if (error) throw error;
@@ -47,7 +49,7 @@ export const doctorService = {
     const { data, error } = await supabase
       .from('doctors')
       .select('*')
-      .eq('user_id', userId)
+      .eq('email', userId)
       .single();
 
     if (error) throw error;

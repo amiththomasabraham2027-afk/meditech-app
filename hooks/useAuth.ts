@@ -2,6 +2,8 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { supabase } from '@/lib/supabaseClient';
+import { userService } from '@/services/userService';
 
 export function useAuth() {
   const [user, setUser] = useState<any>(null);
@@ -10,16 +12,48 @@ export function useAuth() {
   const router = useRouter();
 
   useEffect(() => {
-    // Check localStorage for user data
-    const userStr = localStorage.getItem('user_profile');
-    if (userStr) {
-      try {
-        setUser(JSON.parse(userStr));
-      } catch (err) {
-        setError('Failed to parse user data');
+    const initAuth = async () => {
+      // First try localStorage for fast render
+      const cached = localStorage.getItem('user_profile');
+      if (cached) {
+        try {
+          setUser(JSON.parse(cached));
+          setLoading(false);
+          return;
+        } catch {
+          localStorage.removeItem('user_profile');
+        }
       }
-    }
-    setLoading(false);
+
+      // Fall back to Supabase session
+      const { data: { session } } = await supabase.auth.getSession();
+      if (session?.user) {
+        try {
+          const profile = await userService.getUserProfile(session.user.id);
+          if (profile) {
+            localStorage.setItem('user_profile', JSON.stringify(profile));
+            setUser(profile);
+          }
+        } catch {
+          // No profile yet — leave user as null
+        }
+      }
+      setLoading(false);
+    };
+
+    initAuth();
+
+    // Listen for auth state changes (e.g. session expiry)
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(
+      async (event) => {
+        if (event === 'SIGNED_OUT') {
+          localStorage.removeItem('user_profile');
+          setUser(null);
+        }
+      }
+    );
+
+    return () => subscription.unsubscribe();
   }, []);
 
   const login = (userProfile: any) => {
@@ -27,7 +61,8 @@ export function useAuth() {
     setUser(userProfile);
   };
 
-  const logout = () => {
+  const logout = async () => {
+    await supabase.auth.signOut();
     localStorage.removeItem('user_profile');
     setUser(null);
     router.push('/');

@@ -1,34 +1,30 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useEffect } from 'react';
 import { useAuth } from '@/hooks/useAuth';
 
 export default function Home() {
   const router = useRouter();
-  const { user } = useAuth();
-  const [loading, setLoading] = useState(false);
+  const { user, loading } = useAuth();
 
-  const handleRoleSelection = (role: 'patient' | 'doctor') => {
-    setLoading(true);
-    // Store selected role
-    localStorage.setItem('selected_role', role);
-    
-    if (user) {
-      router.push(role === 'patient' ? '/patient/dashboard' : '/doctor/dashboard');
-    } else {
-      router.push('/role-selection');
+  // If already logged in, redirect to their dashboard
+  useEffect(() => {
+    if (!loading && user) {
+      router.replace(
+        user.role === 'doctor' ? '/doctor/dashboard' : '/patient/dashboard'
+      );
     }
-  };
+  }, [user, loading, router]);
+
+  if (loading) return null;
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 flex items-center justify-center px-4">
       <div className="text-center max-w-md">
         <div className="mb-8">
           <h1 className="text-5xl font-bold text-gray-900 mb-2">Meditech</h1>
-          <p className="text-xl text-gray-600">
-            Professional Telemedicine Platform
-          </p>
+          <p className="text-xl text-gray-600">Professional Telemedicine Platform</p>
         </div>
 
         <p className="text-gray-600 mb-8">
@@ -37,25 +33,25 @@ export default function Home() {
 
         <div className="space-y-4">
           <button
-            onClick={() => handleRoleSelection('patient')}
-            disabled={loading}
-            className="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors disabled:opacity-50"
+            onClick={() => router.push('/login')}
+            className="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors"
           >
-            I'm a Patient
+            Sign In
           </button>
           <button
-            onClick={() => handleRoleSelection('doctor')}
-            disabled={loading}
-            className="w-full bg-green-600 text-white py-3 rounded-lg font-semibold hover:bg-green-700 transition-colors disabled:opacity-50"
+            onClick={() => router.push('/role-selection')}
+            className="w-full bg-white border-2 border-blue-600 text-blue-600 py-3 rounded-lg font-semibold hover:bg-blue-50 transition-colors"
           >
-            I'm a Doctor
+            Create Account
           </button>
         </div>
 
-        <p className="text-sm text-gray-500 mt-8">
-          This is a demonstration platform. Use test credentials to log in.
+        <p className="text-sm text-gray-500 mt-6">
+          Telemedicine platform for patients and doctors.
         </p>
       </div>
     </div>
   );
 }
+
+
